@@ -8,7 +8,7 @@ public class SpringWebfluxEssentialsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringWebfluxEssentialsApplication.class, args);
-		System.out.println("Hello World com WebFlux");
+		System.out.println("Aplicação iniciada!");
 	}
 
 }
