@@ -33,6 +33,9 @@ public class AnimeServiceTest {
 
         BDDMockito.when(animeRepositoryMock.findById(anime.getId()))
                 .thenReturn(Mono.just(anime));
+
+        BDDMockito.when(animeRepositoryMock.save(AnimeCreator.createAnimeToBeSaved()))
+                .thenReturn(Mono.just(anime));
     }
     @Test
     @DisplayName("findAll returns a flux of anime")
@@ -62,6 +65,17 @@ public class AnimeServiceTest {
                 .expectSubscription()
                 .expectError(ResponseStatusException.class)
                 .verify();
+    }
+
+    @Test
+    @DisplayName("save creates an anime when succesfull")
+    public void saved_CreatesAnime_WhenSuccesfull() {
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
+
+        StepVerifier.create(service.save(animeToBeSaved))
+                .expectSubscription()
+                .expectNext(anime)
+                .verifyComplete();
     }
 
 
