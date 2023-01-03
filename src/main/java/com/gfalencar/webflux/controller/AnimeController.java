@@ -4,6 +4,7 @@ import com.gfalencar.webflux.domain.Anime;
 import com.gfalencar.webflux.service.AnimeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -34,5 +35,10 @@ public class AnimeController {
     @RequestMapping(value = "/updateAnime", method = RequestMethod.PUT)
     public Mono<Void> updateAnime(@Valid @RequestBody Anime anime){
         return animeService.update(anime);
+    }
+
+    @RequestMapping(value = "deleteAnime/{id}", method = RequestMethod.DELETE)
+    public Mono<Void> deleteAnime(@PathVariable String id){
+        return animeService.delete(id);
     }
 }
