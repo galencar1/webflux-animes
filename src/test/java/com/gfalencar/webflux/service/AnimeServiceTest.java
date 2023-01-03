@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -36,6 +37,9 @@ public class AnimeServiceTest {
 
         BDDMockito.when(animeRepositoryMock.save(AnimeCreator.createAnimeToBeSaved()))
                 .thenReturn(Mono.just(anime));
+
+        BDDMockito.when(animeRepositoryMock.delete(ArgumentMatchers.any(Anime.class)))
+                .thenReturn(Mono.empty());
     }
     @Test
     @DisplayName("findAll returns a flux of anime")
@@ -75,6 +79,14 @@ public class AnimeServiceTest {
         StepVerifier.create(service.save(animeToBeSaved))
                 .expectSubscription()
                 .expectNext(anime)
+                .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("delete removes the anime when succesfull")
+    public void delete_RemovesAnime_WhenSuccesfull() {
+        StepVerifier.create(service.delete("63b47c98ff353c5a39c80b6a"))
+                .expectSubscription()
                 .verifyComplete();
     }
 
