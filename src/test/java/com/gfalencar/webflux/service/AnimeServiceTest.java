@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 @ExtendWith(SpringExtension.class)
@@ -29,6 +30,9 @@ public class AnimeServiceTest {
     public void SetUp(){
         BDDMockito.when(animeRepositoryMock.findAll())
                 .thenReturn(Flux.just(anime));
+
+        BDDMockito.when(animeRepositoryMock.findById(anime.getId()))
+                .thenReturn(Mono.just(anime));
     }
     @Test
     @DisplayName("findAll returns a flux of anime")
@@ -38,5 +42,15 @@ public class AnimeServiceTest {
                 .expectNext(anime)
                 .verifyComplete();
     }
+
+    @Test
+    @DisplayName("findById returns Mono with anime when it exists")
+    public void findById_ReturnMonoAnime_WhenSuccesfull(){
+        StepVerifier.create(service.findById("63b47c98ff353c5a39c80b6a"))
+                .expectSubscription()
+                .expectNext(anime)
+                .verifyComplete();
+    }
+
 
 }
