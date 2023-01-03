@@ -3,7 +3,6 @@ package com.gfalencar.webflux.service;
 import com.gfalencar.webflux.domain.Anime;
 import com.gfalencar.webflux.repository.AnimeRepository;
 import com.gfalencar.webflux.utils.AnimeCreator;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,7 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -50,6 +50,18 @@ public class AnimeServiceTest {
                 .expectSubscription()
                 .expectNext(anime)
                 .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("findById returns Mono error when anime does not exists")
+    public void findById_ReturnMonoError_WhenEmptyMonoIsReturned(){
+        BDDMockito.when(animeRepositoryMock.findById(anime.getId()))
+                .thenReturn(Mono.empty());
+
+        StepVerifier.create(service.findById("63b47c98ff353c5a39c80b6a"))
+                .expectSubscription()
+                .expectError(ResponseStatusException.class)
+                .verify();
     }
 
 
