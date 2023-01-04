@@ -35,6 +35,9 @@ class AnimeControllerTest {
 
         BDDMockito.when(animeServiceMock.findById(ArgumentMatchers.anyString()))
                 .thenReturn(Mono.just(anime));
+
+        BDDMockito.when(animeServiceMock.save(AnimeCreator.createAnimeToBeSaved()))
+                .thenReturn(Mono.just(anime));
     }
 
     @Test
@@ -50,6 +53,17 @@ class AnimeControllerTest {
     @DisplayName("findById returns a Mono With anime when it exists")
     public void findById_ReturnMonoAnime_WhenSuccesful(){
         StepVerifier.create(animeController.listById("63b47c98ff353c5a39c80b6a"))
+                .expectSubscription()
+                .expectNext(anime)
+                .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("Saves creates an Anime when succesful")
+    public void save_CreatesAnime_WhenSuccesful(){
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
+
+        StepVerifier.create(animeController.saveAnime(animeToBeSaved))
                 .expectSubscription()
                 .expectNext(anime)
                 .verifyComplete();
