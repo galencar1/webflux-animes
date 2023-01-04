@@ -41,6 +41,9 @@ class AnimeControllerTest {
 
         BDDMockito.when(animeServiceMock.delete(ArgumentMatchers.anyString()))
                 .thenReturn(Mono.empty());
+
+        BDDMockito.when(animeServiceMock.update(AnimeCreator.createValidAnime()))
+                .thenReturn(Mono.empty());
     }
 
     @Test
@@ -80,7 +83,13 @@ class AnimeControllerTest {
                 .verifyComplete();
     }
 
-
+    @Test
+    @DisplayName("update save updated anime and returns empty mono when succesful")
+    public void update_SaveUpdatedAnime_WhenSuccesful() {
+        StepVerifier.create(animeController.updateAnime(AnimeCreator.createValidAnime()))
+                .expectSubscription()
+                .verifyComplete();
+    }
 
 
 
