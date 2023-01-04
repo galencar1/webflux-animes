@@ -38,6 +38,9 @@ class AnimeControllerTest {
 
         BDDMockito.when(animeServiceMock.save(AnimeCreator.createAnimeToBeSaved()))
                 .thenReturn(Mono.just(anime));
+
+        BDDMockito.when(animeServiceMock.delete(ArgumentMatchers.anyString()))
+                .thenReturn(Mono.empty());
     }
 
     @Test
@@ -68,6 +71,16 @@ class AnimeControllerTest {
                 .expectNext(anime)
                 .verifyComplete();
     }
+
+    @Test
+    @DisplayName("delete removes the anime when succesfull")
+    public void delete_RemovesAnime_WhenSuccesfull() {
+        StepVerifier.create(animeController.deleteAnime("63b47c98ff353c5a39c80b6a"))
+                .expectSubscription()
+                .verifyComplete();
+    }
+
+
 
 
 
