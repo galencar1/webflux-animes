@@ -18,26 +18,31 @@ public class AnimeController {
     private final AnimeService animeService;
 
     @RequestMapping(value = "/getAllAnimes", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public Flux<Anime> listAll(){
         return animeService.findAll();
     }
 
     @RequestMapping(value = "/getAnime/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public Mono<Anime> listById(@PathVariable String id){
         return animeService.findById(id);
     }
 
     @RequestMapping(value = "/saveAnime", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     public Mono<Anime> saveAnime(@Valid @RequestBody Anime anime) {
         return animeService.save(anime).log();
     }
 
     @RequestMapping(value = "/updateAnime", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> updateAnime(@Valid @RequestBody Anime anime){
         return animeService.update(anime);
     }
 
     @RequestMapping(value = "deleteAnime/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteAnime(@PathVariable String id){
         return animeService.delete(id);
     }

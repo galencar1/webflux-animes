@@ -8,6 +8,7 @@ class SpringWebfluxEssentialsApplicationTests {
 
 	@Test
 	void contextLoads() {
+		SpringWebfluxEssentialsApplication.main(new String[]{});
 	}
 
 }
