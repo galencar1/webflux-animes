@@ -62,7 +62,7 @@ public class AnimeControllerIT {
                 .get()
                 .uri("/getAllAnimes")
                 .exchange()
-                .expectStatus().is2xxSuccessful()
+                .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.[0].id").isEqualTo(anime.getId())
                 .jsonPath("$.[0].name").isEqualTo(anime.getName());
@@ -106,7 +106,7 @@ public class AnimeControllerIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(animeToBeSaves))
                 .exchange()
-                .expectStatus().is2xxSuccessful()
+                .expectStatus().isCreated()
                 .expectBody(Anime.class)
                 .isEqualTo(anime);
     }
@@ -133,7 +133,7 @@ public class AnimeControllerIT {
                 .delete()
                 .uri("/deleteAnime/{id}", "63b47c98ff353c5a39c80b6a")
                 .exchange()
-                .expectStatus().is2xxSuccessful();
+                .expectStatus().isNoContent();
     }
 
     @Test
@@ -161,7 +161,7 @@ public class AnimeControllerIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(anime))
                 .exchange()
-                .expectStatus().is2xxSuccessful();
+                .expectStatus().isNoContent();
     }
 
     @Test
